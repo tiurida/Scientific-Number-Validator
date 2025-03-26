@@ -42,9 +42,6 @@ body {
   .container {
     /* Warna dan bentuk kotak yang Anda gunakan */
     background-color: #0057e7; 
-     h1 {
-    color: rgb(97, 0, 0);
-}
     border-radius: 10px;
     padding: 30px;
     text-align: center;
@@ -52,6 +49,11 @@ body {
     
     /* Hilangkan margin agar tidak mengganggu penempatan */
     margin: 0;
+  }
+
+  /* Deklarasi h1 yang benar */
+  .container h1 {
+    color: rgb(97, 0, 0);
   }
   
   /* Input field di dalam container */
@@ -79,9 +81,9 @@ body {
   
   .modal-content {
     animation: fadeIn 0.3s ease-in-out;
-}
+  }
 
-@keyframes fadeIn {
+  @keyframes fadeIn {
     from {
         opacity: 0;
         transform: scale(0.9);
@@ -90,7 +92,7 @@ body {
         opacity: 1;
         transform: scale(1);
     }
-}
+  }
   
   .close {
     color: #aaa;
@@ -106,4 +108,3 @@ body {
   .close:hover {
     color: #000;
   }
-  

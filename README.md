@@ -1,68 +1,80 @@
-# Scientific Number Validator
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scientific Number Validator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <!-- Tombol "About" di sudut kanan atas -->
+  <div class="top-right">
+    <button id="about-button">About</button>
+  </div>
 
-A simple Flask web application to validate scientific numbers.
+  <!-- Container utama yang ingin kita letakkan di tengah -->
+  <div class="container">
+    <input type="text" id="number-input" placeholder="Enter a number">
+    <button id="validate-button">Validate Number</button>
+    <div id="result">
+      <p id="number"></p>
+      <p id="validity"></p>
+    </div>
+  </div>
 
-## Features
-- Validate scientific numbers (e.g., `1.23e+10`, `-4.56E-3`, `.789e5`).
-- Responsive web interface.
-- Modal for additional information.
+  <!-- Modal Overlay (jika Anda menggunakan modal untuk About) -->
+  <div id="about-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <h2>Hallo,</h2>
+      <p>Saya Tiurida Pasaribu</p>
+      <p>dengan NIM 231011060051</p>
+      <p>dari Program Studi Sistem Informasi</p>
+    </div>
+  </div>
 
-## Requirements
-- Python 3.7+
-- Flask
+  <!-- JavaScript -->
+  <script>
+    // Tombol "Validate"
+    document.getElementById('validate-button').addEventListener('click', async function() {
+      const number = document.getElementById('number-input').value;
+      try {
+        const response = await fetch('/validate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `number=${encodeURIComponent(number)}`
+        });
+        const data = await response.json();
+        document.getElementById('number').innerText = `Entered Number: ${data.number}`;
+        document.getElementById('validity').innerText = `Is Valid: ${data.valid}`;
+      } catch (error) {
+        document.getElementById('validity').innerText = 'Error: Unable to validate the number.';
+        console.error('Error:', error);
+      }
+    });
 
-## Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/scientific-number-validator.git
-   cd scientific-number-validator
+    // Tombol "About" untuk membuka modal
+    const aboutButton = document.getElementById('about-button');
+    const aboutModal = document.getElementById('about-modal');
+    const closeModal = document.getElementById('close-modal');
 
-2. Install dependencies:
-   pip install -r requirements.txt
+    aboutButton.addEventListener('click', () => {
+      aboutModal.style.display = 'block';
+    });
 
-3. Run the application:
-  python app.py
+    // Tombol "x" (close) pada modal
+    closeModal.addEventListener('click', () => {
+      aboutModal.style.display = 'none';
+    });
 
-4. Open your browser and navigate to http://127.0.0.1:5000.
-
-Hosting
-To host the application, use a WSGI server like Gunicorn:
-  pip install gunicorn
-  gunicorn -w 4 app:app
-
-Folder Structure
-  project/
-│
-├── [app.py](http://_vscodecontentref_/6)          # Main application file
-├── static/         # Static files (CSS, JS, images)
-│   └── styles.css
-├── templates/      # HTML templates
-│   └── index.html
-└── README.md       # Project documentation
-
-License
-This project is licensed under the MIT License.
-  
----
-
-### **3. Hosting Checklist**
-Jika Anda sudah memastikan file statis dan template benar, berikut adalah langkah-langkah untuk hosting:
-
-#### **a. Gunakan WSGI Server**
-Jangan gunakan server bawaan Flask ([app.run(debug=True)](http://_vscodecontentref_/7)) untuk produksi. Gunakan WSGI server seperti Gunicorn:
-```bash
-pip install gunicorn
-gunicorn -w 4 app:app
-
-b. Gunakan HTTPS
-Pastikan server hosting Anda mendukung HTTPS untuk keamanan.
-
-c. Periksa Konfigurasi Hosting
-Jika Anda menggunakan platform seperti Heroku, AWS, atau PythonAnywhere, pastikan Anda telah mengatur file requirements.txt dan Procfile (jika diperlukan).
-
-d. Debugging
-Jika tampilan masih tidak muncul, periksa log server hosting untuk melihat error yang terjadi.
-
-Dengan langkah-langkah ini, Anda dapat memperbaiki masalah tampilan dan memperbarui README.md agar lebih informatif. Jika masih ada masalah, beri tahu saya detail error yang muncul.
-
-
+    // Menutup modal jika user klik di luar kotak modal
+    window.addEventListener('click', (event) => {
+      if (event.target === aboutModal) {
+        aboutModal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
